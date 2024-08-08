@@ -1,0 +1,5 @@
+.venv
+migrations/
+.env
+crypto_app/__pycache__
+
