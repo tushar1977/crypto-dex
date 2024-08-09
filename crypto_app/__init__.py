@@ -35,5 +35,8 @@ def create_app():
     from .routes import r
 
     app.register_blueprint(r)
+    from .portfolio import p
+
+    app.register_blueprint(p, url_prefix="/api/portfolio")
 
     return app

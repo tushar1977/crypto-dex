@@ -47,14 +47,15 @@ def create_import():
                 wallet_address=acc_address,
                 wallet_private_key=hashed_private_key.decode("utf-8"),
                 wallet_mnemonic=hashed_mnemonic,
+                wallet_type="new_wallet",
             )
 
             db.session.add(wallet)
             db.session.commit()
             print("done")
             session["wallet_private_key"] = private_key
+            session["wallet_address"] = acc_address
             flash("wallet created")
-
             return redirect(url_for("index"))
         except Exception as e:
             db.session.rollback()
@@ -70,18 +71,19 @@ def create_import():
             if not acc:
                 flash("invalid private key")
             hashed_key = bcrypt.hashpw(priv_key.encode("utf-8"), salt)
-            phase_import = get_phase(priv_key)
-            hashed_phase = bcrypt.hashpw(phase_import.encode("utf-8"), salt)
 
             imp_wallet = User_Wallet_info(
                 wallet_address=acc,
                 wallet_private_key=hashed_key.decode("utf-8"),
+                wallet_type="imported_wallet",
                 wallet_mnemonic="",
             )
 
             db.session.add(imp_wallet)
             db.session.commit()
             session["wallet_private_key"] = priv_key
+
+            session["wallet_address"] = acc
             flash("Imported!")
             return redirect(url_for("r.index"))
         except Exception as e:
