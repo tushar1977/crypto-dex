@@ -30,9 +30,11 @@ def get_token_data(token):
     }
 
 
-@p.route("/get_balancer", methods=["GET"])
+@p.route("/get_balance", methods=["GET"])
 def get_balance():
-    address = "0xA69babEF1cA67A37Ffaf7a485DfFF3382056e78C"
+    address = session["wallet_address"]
+
+    address = Web3.to_checksum_address(address)
 
     all_tokens = alchemy.core.get_token_balances(address)
     balance_wei = alchemy.core.get_balance(address, "latest")
